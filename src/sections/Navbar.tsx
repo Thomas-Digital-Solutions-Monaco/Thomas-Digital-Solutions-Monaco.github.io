@@ -54,7 +54,6 @@ const Navbar = () => {
               if (fb) fb.style.display = "inline-flex";
             }}
           />
-          {/* text fallback shown only if logo.png is missing */}
           <span
             className="items-center gap-2 font-extrabold tracking-tight"
             style={{ display: "none" }}
@@ -69,7 +68,6 @@ const Navbar = () => {
           </span>
         </a>
 
-        {/* Desktop links */}
         <ul className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
             <li key={link.href}>
@@ -98,7 +96,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile menu */}
       {open && (
         <ul className="flex flex-col gap-1 border-t border-line bg-paper/95 px-5 pb-4 md:hidden">
           {links.map((link) => (

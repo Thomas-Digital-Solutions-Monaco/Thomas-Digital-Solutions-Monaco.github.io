@@ -1,7 +1,6 @@
 // ============================================================
 //  TDSM — ALL TRANSLATABLE CONTENT (English + French).
 //  ▸▸ Edit services / projects / experience text HERE. ◂◂
-//  Both languages are kept side by side so nothing drifts.
 // ============================================================
 
 export type Lang = "en" | "fr";
@@ -98,13 +97,9 @@ export interface Translation {
   };
 }
 
-// Project accent colours (shared across both languages, kept red-family).
 const A = { streakly: "#d81e2c", governor: "#9b1c31", dearfolk: "#e0764a" };
 
 export const translations: Record<Lang, Translation> = {
-  // ---------------------------------------------------------
-  //  ENGLISH
-  // ---------------------------------------------------------
   en: {
     nav: {
       home: "Home",
@@ -210,12 +205,6 @@ export const translations: Record<Lang, Translation> = {
           place: "TDSM · Monaco",
           text: "Founding TDSM to deliver web, automation and endpoint engineering to businesses on the Riviera.",
         },
-        {
-          year: "2023 — 2026",
-          role: "Engineer Consultant",
-          place: "Independent consultancy",
-          text: "Ran my own consulting company, delivering engineering, automation and device-management projects for clients.",
-        },
       ],
     },
     contact: {
@@ -237,9 +226,6 @@ export const translations: Record<Lang, Translation> = {
     footer: { rights: "All rights reserved." },
   },
 
-  // ---------------------------------------------------------
-  //  FRANÇAIS
-  // ---------------------------------------------------------
   fr: {
     nav: {
       home: "Accueil",
@@ -344,12 +330,6 @@ export const translations: Record<Lang, Translation> = {
           role: "Ingénieur solutions digitales",
           place: "TDSM · Monaco",
           text: "Fondation de TDSM pour offrir web, automatisation et ingénierie des postes de travail aux entreprises de la Riviera.",
-        },
-        {
-          year: "2023 — 2026",
-          role: "Ingénieur consultant",
-          place: "Société de conseil indépendante",
-          text: "Direction de ma propre société de conseil, avec des projets d'ingénierie, d'automatisation et de gestion de parc.",
         },
       ],
     },

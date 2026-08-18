@@ -11,24 +11,35 @@ export const company = {
   phone: "+377 00 00 00 00",
 };
 
-// Real, colored brand logos served from the Devicon CDN.
-// To add/remove a tech, edit this list — { name, slug }.
-// URL pattern: https://cdn.jsdelivr.net/gh/devicons/devicon/icons/<slug>/<slug>-original.svg
-export const techLogos: { name: string; slug: string }[] = [
-  { name: "Swift", slug: "swift" },
-  { name: "Kotlin", slug: "kotlin" },
-  { name: "React", slug: "react" },
-  { name: "TypeScript", slug: "typescript" },
-  { name: "Node.js", slug: "nodejs" },
-  { name: "Vite", slug: "vitejs" },
-  { name: "Three.js", slug: "threejs" },
-  { name: "Tailwind", slug: "tailwindcss" },
-  { name: "Azure", slug: "azure" },
-  { name: "Figma", slug: "figma" },
-];
+// Real, colored brand logos.
+// `url`   → served from the Simple Icons / Devicon CDNs (no install needed).
+// `color` → monogram fallback colour if an icon ever fails to load.
+export interface TechLogo {
+  name: string;
+  url?: string;
+  color: string;
+}
 
-export const deviconUrl = (slug: string) =>
-  `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${slug}/${slug}-original.svg`;
+const si = (slug: string, color?: string) =>
+  `https://cdn.simpleicons.org/${slug}${color ? `/${color}` : ""}`;
+const dev = (path: string) =>
+  `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${path}.svg`;
+
+export const techLogos: TechLogo[] = [
+  { name: "React Native", url: si("react", "61DAFB"), color: "#61DAFB" },
+  { name: "Expo", url: si("expo", "000020"), color: "#000020" },
+  { name: "TypeScript", url: si("typescript", "3178C6"), color: "#3178C6" },
+  { name: "Node.js", url: si("nodedotjs", "5FA04E"), color: "#5FA04E" },
+  { name: "Vite", url: si("vite", "646CFF"), color: "#646CFF" },
+  { name: "Three.js", url: si("threedotjs", "000000"), color: "#111111" },
+  { name: "Tailwind", url: si("tailwindcss", "06B6D4"), color: "#06B6D4" },
+  { name: "Azure", url: dev("azure/azure-original"), color: "#0078D4" },
+  // Microsoft marks were dropped from Simple Icons → use Devicon for these.
+  { name: "Android", url: dev("android/android-original"), color: "#3DDC84" },
+  { name: "Windows", url: dev("windows11/windows11-original"), color: "#0078D4" },
+  { name: "Linux", url: si("linux", "FCC624"), color: "#111111" },
+  { name: "Mac", url: si("apple", "000000"), color: "#111111" },
+];
 
 export const socials = [
   { name: "GitHub", href: "https://github.com/" },

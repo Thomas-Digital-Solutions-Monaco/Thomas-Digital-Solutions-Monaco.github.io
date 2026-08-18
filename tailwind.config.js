@@ -4,17 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ── TDSM Monaco palette: red & white ──
-        ink: "#14131a", // near-black text
-        paper: "#ffffff", // page background
-        cream: "#fff7f7", // soft panel background
-        panel: "#ffffff", // card background
-        panel2: "#fbeeef", // subtle red-tinted fill
-        line: "#f0dcdd", // light red-grey border
-        mist: "#6b6a72", // muted text
-        brand: "#d81e2c", // Monaco red (primary)
-        brand2: "#9b1c31", // deep crimson
-        gold: "#c8a24a", // luxury accent
+        ink: "#14131a",
+        paper: "#ffffff",
+        cream: "#fff7f7",
+        panel: "#ffffff",
+        panel2: "#fbeeef",
+        line: "#f0dcdd",
+        mist: "#6b6a72",
+        brand: "#d81e2c",
+        brand2: "#9b1c31",
+        gold: "#c8a24a",
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],

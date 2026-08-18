@@ -2,103 +2,70 @@
 
 Bilingual (EN/FR) portfolio for **Thomas Digital Solutions Monaco**, built with
 React 18 · TypeScript · Vite · Three.js · Tailwind · EmailJS. Monaco red-&-white
-theme, a 3D Formula-1 hero (a nod to the Monaco GP), and lazy-loaded 3D for fast
-first paint. Configured for **Option A** (root of `Thomas.github.io`, `base:"/"`).
+theme, a detailed 3D **Formula-1 car** hero (a nod to the Monaco GP), lazy-loaded
+3D for fast first paint. Configured for **Option A** (root of `Thomas.github.io`).
+
+---
+
+## 🖼️ TWO LOGO FILES TO ADD
+
+| Where | File to drop in | Notes |
+|-------|-----------------|-------|
+| **Top-left navbar** | `public/logo.png` | ~80–120 px tall, transparent bg |
+| **Footer** | `public/logo-horizontal.png` | your 1672×941 wide logo; shown at ~48–64 px tall, width auto |
+
+Both have placeholders until you add the files, so nothing looks broken.
 
 ---
 
 ## ✍️ WHERE TO EDIT THINGS
 
-| I want to change… | Edit this file |
+| Change… | File |
 |---|---|
-| **The top-left logo** | Drop your PNG at **`public/logo.png`** (auto-used). Markup: `src/sections/Navbar.tsx` |
-| **All text (EN + FR)** | **`src/i18n/translations.ts`** — services, projects, experience, everything |
-| **Services** | `translations.ts` → `services.items` (both `en` and `fr`) |
-| **Projects / apps** | `translations.ts` → `work.items` (name, tagline, desc, `platforms`, `accent`) |
-| **Experience** | `translations.ts` → `experience.items` |
-| **Brand colours** | `tailwind.config.js` → `colors` block |
-| **Tech logos** | `src/constants/index.ts` → `techLogos` (Devicon slugs) |
-| **The 3D car** | `src/components/HeroObject.tsx` |
+| **All text (EN + FR)** | `src/i18n/translations.ts` |
+| **Services / Projects / Experience** | `src/i18n/translations.ts` |
+| **Brand colours** | `tailwind.config.js` → `colors` |
+| **Tech logos** | `src/constants/index.ts` → `techLogos` |
+| **The 3D F1 car** | `src/components/HeroObject.tsx` |
+| **Store badges** | `src/components/StoreBadge.tsx` |
 
-> Everything user-facing is bilingual. When you add a service/project, add it to
-> **both** the `en` and `fr` blocks in `translations.ts` so nothing goes missing.
+> User-facing content is bilingual — edit both the `en` and `fr` blocks.
 
-### Your logo
-Save your PNG as **`public/logo.png`**. It appears top-left automatically. If the
-file is missing, a text "T TDSM." fallback shows instead. Transparent-background
-PNG, ~80–120 px tall, looks best.
+---
+
+## 🔧 Latest changes
+- **Bigger footer logo** — horizontal logo now renders at ~48 px (mobile) /
+  64 px (desktop) tall instead of 20 px, width scales automatically.
+- **Tech stack** — added **Android** and **Windows** (now: React Native, Expo,
+  TypeScript, Node.js, Vite, Three.js, Tailwind, Azure, Android, Windows, Linux,
+  Mac).
+- **Better F1 car** — added multi-element wings, bargeboards, sidepod intakes,
+  shark-fin, DRS, driver helmet + visor, suspension arms and rimmed tyres.
+- **Consistent left alignment** — the hero (previously centered) now matches the
+  rest of the site: everything is left-aligned, and still looks good on mobile
+  (car stacks under the text).
 
 ---
 
 ## 🌍 Language toggle
-A **FR / EN** button sits in the navbar. It flips every string instantly and
-remembers the choice (localStorage). Logic: `src/i18n/LanguageContext.tsx`.
+FR/EN button in the navbar flips every string and remembers the choice.
 
----
-
-## 📱 Project platform buttons
-Each app shows 2–4 buttons (iOS / Android / macOS / Windows) based on its
-`platforms` array. They're **intentionally not wired yet** — they show a
-"Coming soon" tooltip. When a store listing is ready, open `src/sections/Work.tsx`
-and turn the `<button>` into an `<a href="store-url">`.
+## 📱 Store badges
+Each app shows App Store / Google Play / Mac App Store / Microsoft Store badges.
+**Not wired yet** — swap the `<button>` in `StoreBadge.tsx` for an
+`<a href="store-url">` at launch.
 
 ---
 
 ## 🚀 Run locally
-
 ```bash
-npm install     # first time only
+npm install
 npm run dev     # → http://localhost:5173
 ```
 
-Optional production check:
-
-```bash
-npm run build && npm run preview
-```
-
----
-
 ## 🌐 Deploy (Option A → Thomas.github.io)
-
-Publishing happens on **GitHub's servers**, not your machine — you just push.
-
-1. Push to the **`Thomas.github.io`** repo (`main` branch).
+1. Push to the `Thomas.github.io` repo (`main`).
 2. GitHub → **Settings → Pages → Source → "GitHub Actions."**
-3. Every push auto-builds and deploys to **https://thomas.github.io**.
-
-```bash
-git add . && git commit -m "TDSM portfolio" && git push
-```
-
-### Custom domain later (e.g. tdsm.mc)
-Create `public/CNAME` containing just your domain, add the DNS records at your
-DNS host (Cloudflare via your registrar), then set the domain in Settings → Pages.
-
----
-
-## 📬 Contact form (EmailJS)
-Works out of the box (logs the submission). To send real email: copy
-`.env.example` → `.env.local`, fill in your EmailJS keys, and add the same as
-repo **secrets** for the deployed build.
-
----
-
-## 📁 Structure
-
-```
-tdsm/
-├─ public/               logo.png (yours), favicon.svg, .nojekyll
-├─ src/
-│  ├─ components/        HeroCanvas, HeroObject (F1 car), CanvasLoader, PlatformIcon
-│  ├─ constants/         techLogos, company, socials (non-text)
-│  ├─ i18n/              translations.ts (EN+FR) + LanguageContext.tsx
-│  ├─ lib/               useReveal
-│  ├─ sections/          Navbar, Hero, About, Services, Work, Experience, Contact, Footer
-│  ├─ App.tsx            wraps everything in <LanguageProvider>
-│  └─ index.css
-├─ vite.config.ts        base:"/" + Three.js chunk split
-└─ .github/workflows/deploy.yml
-```
+3. Every push auto-builds and deploys to https://thomas.github.io.
 
 Built with ☕ in Monaco.

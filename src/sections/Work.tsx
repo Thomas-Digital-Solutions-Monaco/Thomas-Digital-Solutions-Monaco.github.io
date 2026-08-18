@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n/LanguageContext";
 import { useReveal } from "../lib/useReveal";
-import PlatformIcon, { platformLabel } from "../components/PlatformIcon";
+import StoreBadge from "../components/StoreBadge";
 
 const Work = () => {
   const { t } = useI18n();
@@ -28,7 +28,6 @@ const Work = () => {
         <p className="eyebrow mb-4">{t.work.eyebrow}</p>
         <h2 className="heading">{t.work.heading}</h2>
 
-        {/* filters */}
         <div className="mt-8 flex flex-wrap gap-2">
           {categories.map((c) => (
             <button
@@ -45,11 +44,9 @@ const Work = () => {
           ))}
         </div>
 
-        {/* grid */}
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((p) => (
             <article key={p.name} className="card group flex flex-col overflow-hidden">
-              {/* colored header with the app initial */}
               <div
                 className="relative flex h-40 w-full items-center justify-center"
                 style={{
@@ -69,19 +66,14 @@ const Work = () => {
                 <p className="text-sm font-medium text-mist">{p.tagline}</p>
                 <p className="subtext mt-3 flex-1 text-sm">{p.desc}</p>
 
-                {/* platform buttons — not wired yet (store links added at launch) */}
+                {/* store badges — not wired yet (store links added at launch) */}
                 <div className="mt-5 flex flex-wrap gap-2">
                   {p.platforms.map((plat) => (
-                    <button
+                    <StoreBadge
                       key={plat}
-                      type="button"
-                      className="btn-platform"
-                      title={t.work.comingSoon}
-                      aria-disabled="true"
-                    >
-                      <PlatformIcon platform={plat} />
-                      {platformLabel(plat)}
-                    </button>
+                      platform={plat}
+                      comingSoon={t.work.comingSoon}
+                    />
                   ))}
                 </div>
               </div>
