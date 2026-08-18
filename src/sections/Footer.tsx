@@ -19,7 +19,7 @@ const Footer = () => {
           <img
             src="/logo-horizontal.png"
             alt={`${company.name} logo`}
-            className="h-12 w-auto sm:h-16"
+            className="h-16 w-auto sm:h-24"
             onError={(e) => {
               e.currentTarget.style.display = "none";
               const fb = e.currentTarget
