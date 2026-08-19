@@ -37,7 +37,7 @@ export interface Translation {
   work: { eyebrow: string; heading: string; all: string; comingSoon: string; items: Project[]; };
   experience: { eyebrow: string; heading: string; items: Exp[]; };
   activity: { eyebrow: string; heading: string; subtext: string; total: string; loading: string; error: string; viewProfile: string; less: string; more: string; months: string[]; };
-  contact: { eyebrow: string; heading: string; subtext: string; name: string; email: string; message: string; namePh: string; emailPh: string; messagePh: string; send: string; sending: string; sent: string; error: string; };
+  contact: { eyebrow: string; heading: string; subtext: string; name: string; email: string; message: string; namePh: string; emailPh: string; messagePh: string; send: string; note: string; or: string; direct: string; };
   footer: { rights: string; };
 }
 
@@ -133,11 +133,12 @@ export const translations: Record<Lang, Translation> = {
     },
     contact: {
       eyebrow: "Get in touch", heading: "Let's build something",
-      subtext: "Tell us about your project and we'll reply within one business day.",
-      name: "Full name", email: "Email", message: "Message",
+      subtext: "Fill in the form and it opens in your email app, ready to send.",
+      name: "Full name", email: "Your email", message: "Message",
       namePh: "Jane Doe", emailPh: "jane@company.com", messagePh: "What can we help you build?",
-      send: "Send message →", sending: "Sending…", sent: "✓ Thanks! Your message has been received.",
-      error: "Something went wrong — please email us directly.",
+      send: "Open in email app →",
+      note: "This opens your default email app (Outlook, Gmail, Mail…) with everything pre-filled.",
+      or: "or email us directly at", direct: "contact@tdsm.mc",
     },
     footer: { rights: "All rights reserved." },
   },
@@ -231,11 +232,12 @@ export const translations: Record<Lang, Translation> = {
     },
     contact: {
       eyebrow: "Contact", heading: "Créons quelque chose ensemble",
-      subtext: "Parlez-nous de votre projet et nous répondrons sous un jour ouvré.",
-      name: "Nom complet", email: "E-mail", message: "Message",
+      subtext: "Remplissez le formulaire : il s'ouvre dans votre messagerie, prêt à envoyer.",
+      name: "Nom complet", email: "Votre e-mail", message: "Message",
       namePh: "Jean Dupont", emailPh: "jean@entreprise.com", messagePh: "Que pouvons-nous construire pour vous ?",
-      send: "Envoyer le message →", sending: "Envoi…", sent: "✓ Merci ! Votre message a bien été reçu.",
-      error: "Une erreur est survenue — écrivez-nous directement.",
+      send: "Ouvrir dans ma messagerie →",
+      note: "Cela ouvre votre application e-mail par défaut (Outlook, Gmail, Mail…) avec tout pré-rempli.",
+      or: "ou écrivez-nous directement à", direct: "contact@tdsm.mc",
     },
     footer: { rights: "Tous droits réservés." },
   },

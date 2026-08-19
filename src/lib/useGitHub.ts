@@ -14,7 +14,7 @@ interface GhData {
 }
 
 interface ApiResponse {
-  total?: Record<string, number>; // includes "lastYear"
+  total?: Record<string, number>;
   contributions: Day[];
 }
 
@@ -24,9 +24,6 @@ let inflight: Promise<GhData> | null = null;
 function load(): Promise<GhData> {
   if (cache) return Promise.resolve(cache);
   if (inflight) return inflight;
-  // ?y=last → GitHub's default rolling-year view. The API's total.lastYear is
-  // the authoritative count (same number GitHub shows), so prefer it over
-  // summing the array ourselves.
   inflight = fetch(
     `https://github-contributions-api.jogruber.de/v4/${githubUsername}?y=last`
   )
@@ -41,7 +38,6 @@ function load(): Promise<GhData> {
   return inflight;
 }
 
-/** Shared hook: live GitHub contributions for the configured user. */
 export function useGitHub() {
   const [data, setData] = useState<GhData | null>(cache);
   const [status, setStatus] = useState<GhStatus>(cache ? "ok" : "loading");
@@ -60,7 +56,6 @@ export function useGitHub() {
   return { data, status };
 }
 
-/** Group days into week columns (each = 7 days aligned by weekday). */
 export function toWeeks(days: Day[]): (Day | null)[][] {
   const cols: (Day | null)[][] = [];
   let col: (Day | null)[] = [];

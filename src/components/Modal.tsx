@@ -1,6 +1,5 @@
 import { useEffect, type ReactNode } from "react";
 
-/** Modal that animates in from a given screen origin (the clicked card). */
 const Modal = ({
   open,
   onClose,

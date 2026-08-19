@@ -7,7 +7,6 @@ const Experience = () => {
 
   return (
     <section id="experience" data-snap className="section py-16 sm:py-24">
-      {/* subtle divider separating Work from Journey (both light backgrounds) */}
       <div className="mx-auto mb-14 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-line to-transparent" />
 
       <div ref={ref} className={shown ? "fade-up" : "opacity-0"}>

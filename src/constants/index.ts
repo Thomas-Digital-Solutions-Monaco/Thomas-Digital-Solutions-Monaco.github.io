@@ -7,7 +7,6 @@ export const company = {
   short: "TDSM",
   email: "contact@tdsm.mc",
   location: "Monaco",
-  phone: "+377 00 00 00 00",
 };
 
 // ▸▸ SET YOUR GITHUB USERNAME HERE (live activity + radar feed) ◂◂

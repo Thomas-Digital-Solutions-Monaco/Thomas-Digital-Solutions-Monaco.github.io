@@ -29,15 +29,13 @@
   color-scheme: dark;
 }
 
-/* ── Seamless auto-scroll (desktop + touch). `proximity` snaps gently only
-   when you're near a section, so tall sections still scroll freely. ── */
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y proximity;
 }
 section[data-snap] {
   scroll-snap-align: start;
-  scroll-margin-top: 72px; /* offset for the fixed navbar */
+  scroll-margin-top: 72px;
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; scroll-behavior: auto; }
@@ -49,42 +47,18 @@ body {
 }
 
 @layer components {
-  .section {
-    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12;
-  }
-  .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand;
-  }
-  .heading {
-    @apply text-3xl sm:text-4xl font-bold tracking-tight text-ink;
-  }
-  .subtext {
-    @apply text-mist text-base sm:text-lg leading-relaxed;
-  }
-  .card {
-    @apply rounded-2xl border border-line bg-panel shadow-soft transition-all duration-300;
-  }
-  .card:hover {
-    @apply border-brand/60 shadow-glow -translate-y-1;
-  }
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200;
-  }
-  .btn-primary {
-    @apply bg-brand text-white hover:bg-brand2;
-  }
-  .btn-ghost {
-    @apply border border-line text-ink hover:border-brand hover:text-brand;
-  }
-  .tech-logo {
-    @apply object-contain grayscale transition-all duration-300;
-  }
-  .group:hover .tech-logo {
-    @apply grayscale-0;
-  }
-  .dark .tech-logo {
-    filter: brightness(0) invert(1);
-  }
+  .section { @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12; }
+  .eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand; }
+  .heading { @apply text-3xl sm:text-4xl font-bold tracking-tight text-ink; }
+  .subtext { @apply text-mist text-base sm:text-lg leading-relaxed; }
+  .card { @apply rounded-2xl border border-line bg-panel shadow-soft transition-all duration-300; }
+  .card:hover { @apply border-brand/60 shadow-glow -translate-y-1; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200; }
+  .btn-primary { @apply bg-brand text-white hover:bg-brand2; }
+  .btn-ghost { @apply border border-line text-ink hover:border-brand hover:text-brand; }
+  .tech-logo { @apply object-contain grayscale transition-all duration-300; }
+  .group:hover .tech-logo { @apply grayscale-0; }
+  .dark .tech-logo { filter: brightness(0) invert(1); }
 }
 
 .gradient-text {
@@ -95,9 +69,7 @@ body {
   -webkit-text-fill-color: transparent;
   animation: shine 6s linear infinite;
 }
-@keyframes shine {
-  to { background-position: 200% center; }
-}
+@keyframes shine { to { background-position: 200% center; } }
 
 .grid-bg {
   background-image:
@@ -128,7 +100,6 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* ── RADAR / SONAR ── */
 .sonar-sweep {
   position: absolute;
   inset: -20%;

@@ -3,7 +3,6 @@ import type { SvcId } from "../i18n/translations";
 import Modal from "./Modal";
 import ServiceIcon from "./ServiceIcon";
 
-/** Detailed preview modal for a Services card. */
 const ServicePreview = ({
   svc,
   origin,

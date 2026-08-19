@@ -1,9 +1,5 @@
 export type ServiceId = "mobile" | "desktop" | "automation" | "cloud";
 
-/**
- * Crisp line-style icons for the Services cards (nicer than emoji).
- * Uses currentColor so they inherit the brand tint.
- */
 const paths: Record<ServiceId, JSX.Element> = {
   mobile: (
     <>
