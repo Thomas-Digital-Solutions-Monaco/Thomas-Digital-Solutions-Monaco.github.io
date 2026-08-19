@@ -11,14 +11,12 @@ const Contact = () => {
   const [status, setStatus] = useState<Status>("idle");
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => setForm({ ...form, [e.target.name]: e.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-
     const serviceId = import.meta.env.VITE_APP_SERVICE_ID;
     const templateId = import.meta.env.VITE_APP_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_APP_PUBLIC_KEY;
@@ -29,18 +27,11 @@ const Contact = () => {
       setForm({ name: "", email: "", message: "" });
       return;
     }
-
     try {
       await emailjs.send(
         serviceId,
         templateId,
-        {
-          from_name: form.name,
-          to_name: company.short,
-          from_email: form.email,
-          to_email: company.email,
-          message: form.message,
-        },
+        { from_name: form.name, to_name: company.short, from_email: form.email, to_email: company.email, message: form.message },
         publicKey
       );
       setStatus("sent");
@@ -51,11 +42,10 @@ const Contact = () => {
     }
   };
 
-  const field =
-    "rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none focus:border-brand";
+  const field = "rounded-xl border border-line bg-cream px-4 py-3 text-ink outline-none focus:border-brand";
 
   return (
-    <section id="contact" className="section py-24 sm:py-32">
+    <section id="contact" data-snap className="section py-16 sm:py-24">
       <div className="mx-auto max-w-2xl">
         <div className="text-center">
           <p className="eyebrow mb-4 justify-center">{t.contact.eyebrow}</p>
@@ -63,65 +53,24 @@ const Contact = () => {
           <p className="subtext mt-4">{t.contact.subtext}</p>
         </div>
 
-        <form
-          ref={formRef}
-          onSubmit={onSubmit}
-          className="card mt-10 flex flex-col gap-5 p-8"
-        >
+        <form ref={formRef} onSubmit={onSubmit} className="card mt-10 flex flex-col gap-5 p-8">
           <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium">{t.contact.name}</span>
-            <input
-              name="name"
-              value={form.name}
-              onChange={onChange}
-              required
-              placeholder={t.contact.namePh}
-              className={field}
-            />
+            <input name="name" value={form.name} onChange={onChange} required placeholder={t.contact.namePh} className={field} />
           </label>
-
           <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium">{t.contact.email}</span>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={onChange}
-              required
-              placeholder={t.contact.emailPh}
-              className={field}
-            />
+            <input name="email" type="email" value={form.email} onChange={onChange} required placeholder={t.contact.emailPh} className={field} />
           </label>
-
           <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium">{t.contact.message}</span>
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={onChange}
-              required
-              rows={5}
-              placeholder={t.contact.messagePh}
-              className={`${field} resize-none`}
-            />
+            <textarea name="message" value={form.message} onChange={onChange} required rows={5} placeholder={t.contact.messagePh} className={`${field} resize-none`} />
           </label>
-
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="btn btn-primary w-full disabled:opacity-60"
-          >
+          <button type="submit" disabled={status === "sending"} className="btn btn-primary w-full disabled:opacity-60">
             {status === "sending" ? t.contact.sending : t.contact.send}
           </button>
-
-          {status === "sent" && (
-            <p className="text-center text-sm text-brand">{t.contact.sent}</p>
-          )}
-          {status === "error" && (
-            <p className="text-center text-sm text-red-600">
-              {t.contact.error} {company.email}
-            </p>
-          )}
+          {status === "sent" && <p className="text-center text-sm text-brand">{t.contact.sent}</p>}
+          {status === "error" && <p className="text-center text-sm text-red-600">{t.contact.error} {company.email}</p>}
         </form>
       </div>
     </section>

@@ -1,6 +1,5 @@
 // ============================================================
 //  Non-text data (not translated).
-//  Text content lives in src/i18n/translations.ts
 // ============================================================
 
 export const company = {
@@ -11,15 +10,14 @@ export const company = {
   phone: "+377 00 00 00 00",
 };
 
-// Real, colored brand logos.
-// `url`   → served from the Simple Icons / Devicon CDNs (no install needed).
-// `color` → monogram fallback colour if an icon ever fails to load.
+// ▸▸ SET YOUR GITHUB USERNAME HERE (live activity + radar feed) ◂◂
+export const githubUsername = "Thomas-Digital-Solutions-Monaco";
+
 export interface TechLogo {
   name: string;
   url?: string;
   color: string;
 }
-
 const si = (slug: string, color?: string) =>
   `https://cdn.simpleicons.org/${slug}${color ? `/${color}` : ""}`;
 const dev = (path: string) =>
@@ -34,15 +32,23 @@ export const techLogos: TechLogo[] = [
   { name: "Three.js", url: si("threedotjs", "000000"), color: "#111111" },
   { name: "Tailwind", url: si("tailwindcss", "06B6D4"), color: "#06B6D4" },
   { name: "Azure", url: dev("azure/azure-original"), color: "#0078D4" },
-  // Microsoft marks were dropped from Simple Icons → use Devicon for these.
   { name: "Android", url: dev("android/android-original"), color: "#3DDC84" },
   { name: "Windows", url: dev("windows11/windows11-original"), color: "#0078D4" },
   { name: "Linux", url: si("linux", "FCC624"), color: "#111111" },
   { name: "Mac", url: si("apple", "000000"), color: "#111111" },
 ];
 
+export const platformsList: { id: string; name: string; note: string }[] = [
+  { id: "ios", name: "iOS", note: "iPhone & iPad" },
+  { id: "android", name: "Android", note: "Phones & tablets" },
+  { id: "mac", name: "macOS", note: "Native Mac apps" },
+  { id: "windows", name: "Windows", note: "Desktop apps" },
+];
+
 export const socials = [
-  { name: "GitHub", href: "https://github.com/" },
-  { name: "LinkedIn", href: "https://www.linkedin.com/" },
+  { name: "GitHub", href: "https://github.com/Thomas-Digital-Solutions-Monaco" },
   { name: "Email", href: "mailto:contact@tdsm.mc" },
 ];
+
+export { monacoEvents } from "./monacoEvents";
+export type { MonacoEvent } from "./monacoEvents";

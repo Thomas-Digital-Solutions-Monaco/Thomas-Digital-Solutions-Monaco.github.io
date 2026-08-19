@@ -2,70 +2,54 @@
 
 Bilingual (EN/FR) portfolio for **Thomas Digital Solutions Monaco**, built with
 React 18 · TypeScript · Vite · Three.js · Tailwind · EmailJS. Monaco red-&-white
-theme, a detailed 3D **Formula-1 car** hero (a nod to the Monaco GP), lazy-loaded
-3D for fast first paint. Configured for **Option A** (root of `Thomas.github.io`).
+theme with dark mode, a 3D Formula-1 hero, a **live "TDSM Live" radar**, and a
+live GitHub contributions view. Configured for **Option A** (`Thomas.github.io`).
 
 ---
 
-## 🖼️ TWO LOGO FILES TO ADD
-
-| Where | File to drop in | Notes |
-|-------|-----------------|-------|
-| **Top-left navbar** | `public/logo.png` | ~80–120 px tall, transparent bg |
-| **Footer** | `public/logo-horizontal.png` | your 1672×941 wide logo; shown at ~48–64 px tall, width auto |
-
-Both have placeholders until you add the files, so nothing looks broken.
+## ⚙️ THINGS TO SET
+| What | Where |
+|------|-------|
+| **GitHub username** (live radar count + activity heatmap) | `src/constants/index.ts` → `githubUsername` |
+| **Monaco event dates** (radar countdowns) | `src/constants/monacoEvents.ts` |
+| **Logos** | `public/logo.png` (navbar) · `public/logo-horizontal.png` (footer) |
 
 ---
 
-## ✍️ WHERE TO EDIT THINGS
+## 🆕 What's new
+- **"TDSM Live" radar section** (just below the hero, left-aligned, mobile-ready):
+  a CSS **sonar sweep** + concentric rings + expanding ping, a **LIVE** badge, a
+  live **Monaco clock** (`Europe/Monaco`), a KPI strip (apps · platforms · years
+  · **live GitHub contributions**), the **next Monaco event** with a live day
+  countdown, and a **rotating feed** cycling through upcoming Monaco events
+  (the `2/5` effect). Component: `src/components/LiveRadar.tsx`.
+- **Monaco event countdowns** — real, official dates in
+  `src/constants/monacoEvents.ts` (Yacht Show 23–26 Sep 2026 · Rallye
+  Monte-Carlo 18–24 Jan 2027 · Monaco GP 4–6 Jun 2027). Cycling Grand Tours are
+  left as commented placeholders — enable only if a year's route passes through
+  Monaco. **No official live API exists**, so update these yearly by hand.
+- **"Activity" link** added to the navbar.
+- **KPI modals animate from the clicked card** — the preview pops open scaling
+  from the exact card you clicked (`src/components/Modal.tsx` + `About.tsx`).
 
+---
+
+## ✍️ Where to edit content
 | Change… | File |
 |---|---|
-| **All text (EN + FR)** | `src/i18n/translations.ts` |
-| **Services / Projects / Experience** | `src/i18n/translations.ts` |
-| **Brand colours** | `tailwind.config.js` → `colors` |
-| **Tech logos** | `src/constants/index.ts` → `techLogos` |
-| **The 3D F1 car** | `src/components/HeroObject.tsx` |
-| **Store badges** | `src/components/StoreBadge.tsx` |
-
-> User-facing content is bilingual — edit both the `en` and `fr` blocks.
+| **All text (EN + FR)** incl. radar copy | `src/i18n/translations.ts` |
+| **Monaco events** | `src/constants/monacoEvents.ts` |
+| **Radar sweep colour / speed** | `src/index.css` (`.sonar-sweep`, `@keyframes sweep`) |
+| **Brand colours / theme** | `tailwind.config.js` + `src/index.css` (`:root` / `.dark`) |
 
 ---
 
-## 🔧 Latest changes
-- **Bigger footer logo** — horizontal logo now renders at ~48 px (mobile) /
-  64 px (desktop) tall instead of 20 px, width scales automatically.
-- **Tech stack** — added **Android** and **Windows** (now: React Native, Expo,
-  TypeScript, Node.js, Vite, Three.js, Tailwind, Azure, Android, Windows, Linux,
-  Mac).
-- **Better F1 car** — added multi-element wings, bargeboards, sidepod intakes,
-  shark-fin, DRS, driver helmet + visor, suspension arms and rimmed tyres.
-- **Consistent left alignment** — the hero (previously centered) now matches the
-  rest of the site: everything is left-aligned, and still looks good on mobile
-  (car stacks under the text).
-
----
-
-## 🌍 Language toggle
-FR/EN button in the navbar flips every string and remembers the choice.
-
-## 📱 Store badges
-Each app shows App Store / Google Play / Mac App Store / Microsoft Store badges.
-**Not wired yet** — swap the `<button>` in `StoreBadge.tsx` for an
-`<a href="store-url">` at launch.
-
----
-
-## 🚀 Run locally
+## 🚀 Run & deploy
 ```bash
 npm install
-npm run dev     # → http://localhost:5173
+npm run dev            # → http://localhost:5173
 ```
-
-## 🌐 Deploy (Option A → Thomas.github.io)
-1. Push to the `Thomas.github.io` repo (`main`).
-2. GitHub → **Settings → Pages → Source → "GitHub Actions."**
-3. Every push auto-builds and deploys to https://thomas.github.io.
+Deploy (Option A): push to `Thomas.github.io` → **Settings → Pages → Source →
+GitHub Actions**. Workflow already uses the Node-24 action versions.
 
 Built with ☕ in Monaco.

@@ -6,12 +6,14 @@ const Experience = () => {
   const { ref, shown } = useReveal<HTMLDivElement>();
 
   return (
-    <section id="experience" className="section py-24 sm:py-32">
+    <section id="experience" data-snap className="section py-16 sm:py-24">
+      {/* subtle divider separating Work from Journey (both light backgrounds) */}
+      <div className="mx-auto mb-14 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-line to-transparent" />
+
       <div ref={ref} className={shown ? "fade-up" : "opacity-0"}>
         <p className="eyebrow mb-4">{t.experience.eyebrow}</p>
         <h2 className="heading">{t.experience.heading}</h2>
-
-        <div className="mt-12 border-l-2 border-line pl-6">
+        <div className="mt-10 border-l-2 border-line pl-6">
           {t.experience.items.map((e, i) => (
             <div key={i} className="relative pb-10 last:pb-0">
               <span className="absolute -left-[31px] top-1 grid h-4 w-4 place-items-center rounded-full bg-brand ring-4 ring-paper" />

@@ -9,12 +9,17 @@
       content="Thomas Digital Solutions Monaco (TDSM) — mobile, desktop & web app development from Monaco."
     />
     <meta property="og:title" content="Thomas Digital Solutions Monaco — TDSM" />
-    <meta
-      property="og:description"
-      content="Mobile, desktop & web apps — designed and shipped from Monaco."
-    />
+    <meta property="og:description" content="Mobile, desktop & web apps — designed and shipped from Monaco." />
     <meta property="og:type" content="website" />
     <title>TDSM — Thomas Digital Solutions Monaco</title>
+    <script>
+      try {
+        var s = localStorage.getItem("tdsm-theme");
+        if (s === "dark" || (!s && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

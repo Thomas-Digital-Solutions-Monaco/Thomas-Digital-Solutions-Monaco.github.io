@@ -15,25 +15,10 @@ const HeroCanvas = () => {
       <Suspense fallback={<CanvasLoader />}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[4, 6, 4]} intensity={1.7} castShadow />
-        <spotLight
-          position={[-4, 5, 2]}
-          angle={0.4}
-          penumbra={0.8}
-          intensity={1.2}
-          color="#ffd0d0"
-        />
-
+        <spotLight position={[-4, 5, 2]} angle={0.4} penumbra={0.8} intensity={1.2} color="#ffd0d0" />
         <HeroObject />
-
-        <ContactShadows
-          position={[0, -0.95, 0]}
-          opacity={0.28}
-          scale={12}
-          blur={2.8}
-          far={4}
-        />
+        <ContactShadows position={[0, -0.95, 0]} opacity={0.28} scale={12} blur={2.8} far={4} />
         <Environment preset="city" />
-
         <OrbitControls
           enableZoom={false}
           enablePan={false}
