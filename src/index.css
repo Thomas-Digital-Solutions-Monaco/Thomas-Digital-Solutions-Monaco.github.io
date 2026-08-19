@@ -29,13 +29,20 @@
   color-scheme: dark;
 }
 
+/* ── Scrolling ──
+   Smooth anchor navigation everywhere. Section snapping is enabled ONLY on
+   desktop pointer devices (mouse/trackpad); touch devices get fully native,
+   momentum-based scrolling so it stays perfectly fluid on phones/tablets. */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
+  -webkit-text-size-adjust: 100%;
 }
 section[data-snap] {
-  scroll-snap-align: start;
-  scroll-margin-top: 72px;
+  scroll-margin-top: 72px; /* offset for the fixed navbar on anchor jumps */
+}
+@media (hover: hover) and (pointer: fine) {
+  html { scroll-snap-type: y proximity; }
+  section[data-snap] { scroll-snap-align: start; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; scroll-behavior: auto; }

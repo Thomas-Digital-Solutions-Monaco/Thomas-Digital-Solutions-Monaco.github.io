@@ -51,9 +51,31 @@ const Hero = () => {
         </div>
 
         <div className="relative h-[300px] w-full sm:h-[380px] lg:h-[520px]">
-          <Suspense fallback={<CanvasFallback />}>
-            <HeroCanvas />
-          </Suspense>
+          {/* ── decorative backdrop so the car doesn't float alone ── */}
+          <div className="pointer-events-none absolute inset-0 -z-0" aria-hidden>
+            {/* soft brand-red radial glow */}
+            <div className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(216,30,44,0.28),rgba(216,30,44,0.08)_45%,transparent_70%)] blur-2xl" />
+            {/* cool secondary accent for depth */}
+            <div className="absolute right-[12%] top-[14%] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(155,28,49,0.25),transparent_70%)] blur-2xl" />
+            {/* faint concentric rings, echoing the radar */}
+            <div className="absolute left-1/2 top-1/2 h-[86%] w-[86%] -translate-x-1/2 -translate-y-1/2">
+              {[1, 0.72, 0.46].map((s) => (
+                <span
+                  key={s}
+                  className="absolute rounded-full border border-brand/10"
+                  style={{ inset: `${(1 - s) * 50}%` }}
+                />
+              ))}
+            </div>
+            {/* grounding "platform" ellipse under the car */}
+            <div className="absolute bottom-[12%] left-1/2 h-10 w-3/5 -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(20,19,26,0.18),transparent_70%)] blur-md dark:bg-[radial-gradient(ellipse,rgba(0,0,0,0.5),transparent_70%)]" />
+          </div>
+
+          <div className="relative z-10 h-full w-full">
+            <Suspense fallback={<CanvasFallback />}>
+              <HeroCanvas />
+            </Suspense>
+          </div>
         </div>
       </div>
     </section>

@@ -25,7 +25,6 @@ const Contact = () => {
       `mailto:${company.email}` +
       `?subject=${encodeURIComponent(subject)}` +
       `&body=${encodeURIComponent(body)}`;
-    // Opens the user's default email client.
     window.location.href = href;
   };
 

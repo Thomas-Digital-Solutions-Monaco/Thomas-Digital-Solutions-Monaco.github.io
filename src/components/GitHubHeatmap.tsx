@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { useI18n } from "../i18n/LanguageContext";
 import { useGitHub, toWeeks } from "../lib/useGitHub";
 import { githubUsername } from "../constants";
@@ -15,6 +15,7 @@ const GitHubHeatmap = ({ compact = false }: { compact?: boolean }) => {
   const { t } = useI18n();
   const a = t.activity;
   const { data, status } = useGitHub();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const weeks = useMemo(() => (data ? toWeeks(data.days) : []), [data]);
 
@@ -32,6 +33,14 @@ const GitHubHeatmap = ({ compact = false }: { compact?: boolean }) => {
     });
     return out;
   }, [weeks, a.months]);
+
+  // Start scrolled to the far right (most recent weeks / current month).
+  // Essential on mobile where the year doesn't fit on screen.
+  useEffect(() => {
+    if (status === "ok" && scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, [status, weeks.length]);
 
   const cell = compact ? 9 : 11;
   const gap = 3;
@@ -59,7 +68,7 @@ const GitHubHeatmap = ({ compact = false }: { compact?: boolean }) => {
         </p>
       )}
 
-      <div className="overflow-x-auto pb-2">
+      <div ref={scrollRef} className="overflow-x-auto pb-2">
         <div className="inline-block">
           <div className="relative mb-1 h-4" style={{ width: weeks.length * step }}>
             {monthLabels.map((m) => (

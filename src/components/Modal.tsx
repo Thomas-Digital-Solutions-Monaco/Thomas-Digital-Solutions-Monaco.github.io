@@ -39,18 +39,23 @@ const Modal = ({
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={title}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div style={style} className="modal-pop relative z-10 w-full max-w-lg rounded-2xl border border-line bg-panel p-6 shadow-glow">
+      {/* flex column so the header stays put and the body scrolls only if needed.
+          max-h keeps the whole dialog within the viewport on small screens. */}
+      <div
+        style={style}
+        className="modal-pop relative z-10 flex max-h-[88vh] w-full max-w-lg flex-col rounded-2xl border border-line bg-panel p-6 shadow-glow"
+      >
         <div className="mb-4 flex items-center justify-between gap-4">
           <h3 className="text-xl font-bold text-ink">{title}</h3>
           <button
             onClick={onClose}
             aria-label={closeLabel}
-            className="grid h-8 w-8 place-items-center rounded-lg border border-line text-mist transition-colors hover:border-brand hover:text-brand"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line text-mist transition-colors hover:border-brand hover:text-brand"
           >
             ✕
           </button>
         </div>
-        <div className="max-h-[60vh] overflow-y-auto px-1">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-1">{children}</div>
       </div>
     </div>
   );

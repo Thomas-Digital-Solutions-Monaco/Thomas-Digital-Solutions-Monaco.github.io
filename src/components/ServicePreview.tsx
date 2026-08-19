@@ -3,6 +3,7 @@ import type { SvcId } from "../i18n/translations";
 import Modal from "./Modal";
 import ServiceIcon from "./ServiceIcon";
 
+/** Compact service preview — tight spacing so the CTA fits without scrolling. */
 const ServicePreview = ({
   svc,
   origin,
@@ -18,9 +19,9 @@ const ServicePreview = ({
   return (
     <Modal open={svc !== null} onClose={onClose} title={item?.title ?? ""} closeLabel={t.services.close} origin={origin}>
       {item && (
-        <div className="space-y-5">
+        <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand/10 text-brand">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand/10 text-brand">
               <ServiceIcon id={item.id} className="h-6 w-6" />
             </span>
             <p className="text-sm font-medium text-mist">{item.desc}</p>
@@ -28,10 +29,10 @@ const ServicePreview = ({
 
           <p className="text-sm leading-relaxed text-ink">{item.detail}</p>
 
-          <ul className="space-y-2">
+          <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
             {item.points.map((pt) => (
               <li key={pt} className="flex items-start gap-2 text-sm text-mist">
-                <span className="mt-1 text-brand">✓</span>
+                <span className="mt-0.5 text-brand">✓</span>
                 <span>{pt}</span>
               </li>
             ))}
