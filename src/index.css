@@ -5,61 +5,35 @@
 @tailwind utilities;
 
 :root {
-  --paper: 255 255 255;
-  --ink: 20 19 26;
-  --cream: 255 247 247;
-  --panel: 255 255 255;
-  --panel2: 251 238 239;
-  --line: 240 220 221;
-  --mist: 107 106 114;
-  --brand: 216 30 44;
-  --brand2: 155 28 49;
-  --gold: 200 162 74;
+  --paper: 255 255 255; --ink: 20 19 26; --cream: 255 247 247;
+  --panel: 255 255 255; --panel2: 251 238 239; --line: 240 220 221;
+  --mist: 107 106 114; --brand: 216 30 44; --brand2: 155 28 49; --gold: 200 162 74;
   color-scheme: light;
 }
-
 .dark {
-  --paper: 15 15 20;
-  --ink: 240 240 246;
-  --cream: 22 22 30;
-  --panel: 26 26 34;
-  --panel2: 34 30 40;
-  --line: 48 44 58;
-  --mist: 150 150 166;
+  /* deep "night race" navy-charcoal with a faint warm-red lift */
+  --paper: 12 14 22;    /* page base */
+  --ink: 236 238 245;   /* near-white text, slightly cool */
+  --cream: 20 23 34;    /* raised surface / inputs */
+  --panel: 26 30 43;    /* cards & glass panels */
+  --panel2: 38 32 44;   /* accent surface (warmer) */
+  --line: 54 60 79;     /* borders, a touch brighter for definition */
+  --mist: 158 166 186;  /* muted text, lifted for readability */
   color-scheme: dark;
 }
 
-/* ── Scrolling ──
-   Smooth anchor navigation everywhere. Section snapping is enabled ONLY on
-   desktop pointer devices (mouse/trackpad); touch devices get fully native,
-   momentum-based scrolling so it stays perfectly fluid on phones/tablets. */
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-section[data-snap] {
-  scroll-margin-top: 72px; /* offset for the fixed navbar on anchor jumps */
-}
-@media (hover: hover) and (pointer: fine) {
-  html { scroll-snap-type: y proximity; }
-  section[data-snap] { scroll-snap-align: start; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-snap-type: none; scroll-behavior: auto; }
-}
-
+html { -webkit-text-size-adjust: 100%; }
 body {
-  @apply bg-paper text-ink font-sans antialiased overflow-x-hidden;
+  @apply bg-paper text-ink font-sans antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+body.deck-lock { overflow: hidden; overscroll-behavior: none; touch-action: none; }
 
 @layer components {
-  .section { @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12; }
   .eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand; }
-  .heading { @apply text-3xl sm:text-4xl font-bold tracking-tight text-ink; }
-  .subtext { @apply text-mist text-base sm:text-lg leading-relaxed; }
+  .heading { @apply text-2xl sm:text-3xl font-bold tracking-tight text-ink; }
+  .subtext { @apply text-mist text-sm sm:text-base leading-relaxed; }
   .card { @apply rounded-2xl border border-line bg-panel shadow-soft transition-all duration-300; }
-  .card:hover { @apply border-brand/60 shadow-glow -translate-y-1; }
   .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all duration-200; }
   .btn-primary { @apply bg-brand text-white hover:bg-brand2; }
   .btn-ghost { @apply border border-line text-ink hover:border-brand hover:text-brand; }
@@ -71,74 +45,40 @@ body {
 .gradient-text {
   background: linear-gradient(90deg, #d81e2c, #9b1c31, #c8a24a);
   background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   animation: shine 6s linear infinite;
 }
 @keyframes shine { to { background-position: 200% center; } }
 
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(216, 30, 44, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(216, 30, 44, 0.06) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
-}
-
-.fade-up { animation: fadeUp 0.8s ease both; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .word-swap { animation: wordFade 0.5s ease; }
-@keyframes wordFade {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes wordFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-.modal-pop {
-  transform-origin: var(--ox, 50%) var(--oy, 50%);
-  animation: modalPop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@keyframes modalPop {
-  from { opacity: 0; transform: scale(0.6); }
-  to { opacity: 1; transform: scale(1); }
-}
+.modal-pop { transform-origin: var(--ox, 50%) var(--oy, 50%); animation: modalPop 0.28s cubic-bezier(0.22,1,0.36,1); }
+@keyframes modalPop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
 
 .sonar-sweep {
-  position: absolute;
-  inset: -20%;
-  border-radius: 9999px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(216, 30, 44, 0.05) 30deg,
-    rgba(216, 30, 44, 0.38) 58deg,
-    rgba(216, 30, 44, 0.05) 62deg,
-    transparent 90deg
-  );
-  animation: sweep 9s linear infinite;
-  will-change: transform;
+  position: absolute; inset: -20%; border-radius: 9999px;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(216,30,44,0.05) 30deg, rgba(216,30,44,0.38) 58deg, rgba(216,30,44,0.05) 62deg, transparent 90deg);
+  animation: sweep 9s linear infinite; will-change: transform;
 }
 @keyframes sweep { to { transform: rotate(360deg); } }
 
-.radar-ping {
-  position: absolute;
-  border-radius: 9999px;
-  border: 1px solid rgba(216, 30, 44, 0.35);
-  animation: ping 3.5s ease-out infinite;
-  opacity: 0;
-}
-@keyframes ping {
-  0% { transform: scale(0.2); opacity: 0.6; }
-  80% { opacity: 0.05; }
-  100% { transform: scale(1); opacity: 0; }
+.live-dot { animation: livePulse 1.6s ease-in-out infinite; }
+@keyframes livePulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+
+.stage-ground {
+  background:
+    radial-gradient(1200px 700px at 72% -10%, rgba(216,30,44,0.06), transparent 60%),
+    linear-gradient(180deg, rgb(var(--paper)), rgb(var(--cream)));
 }
 
-.live-dot { animation: livePulse 1.6s ease-in-out infinite; }
-@keyframes livePulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
+/* richer glass panels + shadow in dark mode */
+.dark .card,
+.dark .shadow-glow { box-shadow: 0 10px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02); }
+.dark .btn-primary { box-shadow: 0 6px 20px -8px rgba(216,30,44,0.6); }
+.dark .stage-ground {
+  background:
+    radial-gradient(900px 520px at 78% 8%, rgba(216,30,44,0.20), transparent 62%),
+    radial-gradient(1100px 700px at 12% 100%, rgba(70,90,160,0.14), transparent 60%),
+    linear-gradient(180deg, #0c0f1a 0%, #0a0c15 55%, #090b12 100%);
 }
