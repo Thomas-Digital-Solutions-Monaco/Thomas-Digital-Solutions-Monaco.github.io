@@ -318,8 +318,8 @@ const CircuitWorld = () => {
 
       {/* Full-track button */}
       <div className="absolute right-4 top-20 z-30 dvd:right-6 dvd:top-24">
-        <button onClick={() => api.current.overviewToggle()} className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/85 px-4 py-2.5 text-sm font-semibold text-ink shadow-soft backdrop-blur-md transition-colors hover:border-brand hover:text-brand" title={c.overview}>
-          <span className="text-base" aria-hidden>{overview ? "↩" : "⤢"}</span><span>{c.overview}</span>
+        <button onClick={() => api.current.overviewToggle()} className="inline-flex items-center rounded-full border border-line bg-panel/85 px-3 py-2.5 text-sm font-semibold text-ink shadow-soft backdrop-blur-md transition-colors hover:border-brand hover:text-brand">
+          <span aria-hidden>{overview ? "↩" : "⤢"}</span>
         </button>
       </div>
 
