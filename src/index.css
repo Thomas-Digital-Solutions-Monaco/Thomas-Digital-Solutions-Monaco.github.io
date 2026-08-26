@@ -1,9 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --paper: 255 255 255; --ink: 20 19 26; --cream: 255 247 247;
   --panel: 255 255 255; --panel2: 251 238 239; --line: 240 220 221;
@@ -11,24 +9,13 @@
   color-scheme: light;
 }
 .dark {
-  /* deep "night race" navy-charcoal with a faint warm-red lift */
-  --paper: 12 14 22;    /* page base */
-  --ink: 236 238 245;   /* near-white text, slightly cool */
-  --cream: 20 23 34;    /* raised surface / inputs */
-  --panel: 26 30 43;    /* cards & glass panels */
-  --panel2: 38 32 44;   /* accent surface (warmer) */
-  --line: 54 60 79;     /* borders, a touch brighter for definition */
-  --mist: 158 166 186;  /* muted text, lifted for readability */
+  --paper: 12 14 22; --ink: 236 238 245; --cream: 20 23 34;
+  --panel: 26 30 43; --panel2: 38 32 44; --line: 54 60 79; --mist: 158 166 186;
   color-scheme: dark;
 }
-
 html { -webkit-text-size-adjust: 100%; }
-body {
-  @apply bg-paper text-ink font-sans antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+body { @apply bg-paper text-ink font-sans antialiased; transition: background-color 0.3s ease, color 0.3s ease; }
 body.deck-lock { overflow: hidden; overscroll-behavior: none; touch-action: none; }
-
 @layer components {
   .eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand; }
   .heading { @apply text-2xl sm:text-3xl font-bold tracking-tight text-ink; }
@@ -41,44 +28,25 @@ body.deck-lock { overflow: hidden; overscroll-behavior: none; touch-action: none
   .group:hover .tech-logo { @apply grayscale-0; }
   .dark .tech-logo { filter: brightness(0) invert(1); }
 }
-
-.gradient-text {
-  background: linear-gradient(90deg, #d81e2c, #9b1c31, #c8a24a);
-  background-size: 200% auto;
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  animation: shine 6s linear infinite;
-}
+.gradient-text { background: linear-gradient(90deg, #d81e2c, #9b1c31, #c8a24a); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 6s linear infinite; }
 @keyframes shine { to { background-position: 200% center; } }
-
 .word-swap { animation: wordFade 0.5s ease; }
 @keyframes wordFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
 .modal-pop { transform-origin: var(--ox, 50%) var(--oy, 50%); animation: modalPop 0.28s cubic-bezier(0.22,1,0.36,1); }
 @keyframes modalPop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
-
-.sonar-sweep {
-  position: absolute; inset: -20%; border-radius: 9999px;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(216,30,44,0.05) 30deg, rgba(216,30,44,0.38) 58deg, rgba(216,30,44,0.05) 62deg, transparent 90deg);
-  animation: sweep 9s linear infinite; will-change: transform;
-}
+.sonar-sweep { position: absolute; inset: -20%; border-radius: 9999px;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(216,30,44,0.06) 24deg, rgba(216,30,44,0.55) 58deg, rgba(216,30,44,0.06) 64deg, transparent 92deg);
+  animation: sweep 8s linear infinite; will-change: transform; }
 @keyframes sweep { to { transform: rotate(360deg); } }
-
+.radar-rings { position: absolute; inset: 0; border-radius: 9999px;
+  background: radial-gradient(circle, transparent 0 22%, rgba(216,30,44,0.12) 22% 22.6%, transparent 22.6%),
+    radial-gradient(circle, transparent 0 44%, rgba(216,30,44,0.10) 44% 44.6%, transparent 44.6%),
+    radial-gradient(circle, transparent 0 66%, rgba(216,30,44,0.08) 66% 66.6%, transparent 66.6%); }
 .live-dot { animation: livePulse 1.6s ease-in-out infinite; }
 @keyframes livePulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
-
-.stage-ground {
-  background:
-    radial-gradient(1200px 700px at 72% -10%, rgba(216,30,44,0.06), transparent 60%),
-    linear-gradient(180deg, rgb(var(--paper)), rgb(var(--cream)));
-}
-
-/* richer glass panels + shadow in dark mode */
-.dark .card,
-.dark .shadow-glow { box-shadow: 0 10px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02); }
+.car-glow { animation: carGlow 2s ease-in-out infinite; }
+@keyframes carGlow { 0%,100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+.stage-ground { background: radial-gradient(1200px 700px at 72% -10%, rgba(216,30,44,0.06), transparent 60%), linear-gradient(180deg, rgb(var(--paper)), rgb(var(--cream))); }
+.dark .stage-ground { background: radial-gradient(900px 520px at 78% 8%, rgba(216,30,44,0.20), transparent 62%), radial-gradient(1100px 700px at 12% 100%, rgba(70,90,160,0.14), transparent 60%), linear-gradient(180deg, #0c0f1a 0%, #0a0c15 55%, #090b12 100%); }
+.dark .card, .dark .shadow-glow { box-shadow: 0 10px 40px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02); }
 .dark .btn-primary { box-shadow: 0 6px 20px -8px rgba(216,30,44,0.6); }
-.dark .stage-ground {
-  background:
-    radial-gradient(900px 520px at 78% 8%, rgba(216,30,44,0.20), transparent 62%),
-    radial-gradient(1100px 700px at 12% 100%, rgba(70,90,160,0.14), transparent 60%),
-    linear-gradient(180deg, #0c0f1a 0%, #0a0c15 55%, #090b12 100%);
-}

@@ -113,17 +113,24 @@ const StopContent = ({ kind, onStat, onSvc, onRestart }: Props) => {
     );
 
   if (kind === "experience")
+    // flex timeline — dot lives in its own column (no negative offset that a
+    // scroll container would clip).
     return (
       <div>
         <p className="eyebrow mb-3">{t.experience.eyebrow}</p>
         <h2 className="heading">{t.experience.heading}</h2>
-        <div className="mt-4 border-l-2 border-line pl-5">
+        <div className="mt-4 space-y-0">
           {t.experience.items.map((e, i) => (
-            <div key={i} className="relative pb-2 last:pb-0">
-              <span className="absolute -left-[27px] top-1 h-3.5 w-3.5 rounded-full bg-brand ring-4 ring-panel" />
-              <p className="text-sm font-semibold text-brand">{e.year}</p>
-              <h3 className="mt-0.5 font-semibold text-ink">{e.role} <span className="text-mist">· {e.place}</span></h3>
-              <p className="mt-1 text-sm text-mist">{e.text}</p>
+            <div key={i} className="flex gap-3">
+              <div className="flex flex-col items-center pt-1">
+                <span className="h-3.5 w-3.5 shrink-0 rounded-full bg-brand ring-4 ring-panel" />
+                {i < t.experience.items.length - 1 && <span className="mt-1 w-0.5 flex-1 bg-line" />}
+              </div>
+              <div className="flex-1 pb-4">
+                <p className="text-sm font-semibold text-brand">{e.year}</p>
+                <h3 className="mt-0.5 font-semibold text-ink">{e.role} <span className="text-mist">· {e.place}</span></h3>
+                <p className="mt-1 text-sm text-mist">{e.text}</p>
+              </div>
             </div>
           ))}
         </div>

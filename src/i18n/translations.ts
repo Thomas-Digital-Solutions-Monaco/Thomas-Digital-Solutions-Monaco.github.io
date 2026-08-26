@@ -13,7 +13,7 @@ export interface Previews { appsTitle: string; experienceTitle: string; platform
 
 export interface Translation {
   nav: { home: string; about: string; services: string; work: string; activity: string; contact: string; cta: string; };
-  circuit: { hud: string; restart: string; hint: string; jump: string; overview: string; resume: string; corners: Record<CornerKey, string>; };
+  circuit: { hud: string; restart: string; hint: string; overview: string; resume: string; corners: Record<CornerKey, string>; };
   hero: { badge: string; words: string[]; lead: string; tail: string; subtext: string; ctaPrimary: string; ctaSecondary: string; };
   radar: { live: string; title: string; kApps: string; kPlatforms: string; kYears: string; kCommits: string; nextEvent: string; today: string; news: string; days: string; day: string; starts: string; liveNow: string; };
   about: { eyebrow: string; headA: string; acc1: string; mid: string; acc2: string; end: string; subtext: string; stats: Stat[]; previews: Previews; };
@@ -29,7 +29,7 @@ const A = { streakly: "#d81e2c", governor: "#9b1c31", dearfolk: "#e0764a" };
 export const translations: Record<Lang, Translation> = {
   en: {
     nav: { home: "Home", about: "About", services: "Services", work: "Work", activity: "Activity", contact: "Contact", cta: "Start a project" },
-    circuit: { hud: "Corner", restart: "🏁 Victory lap — restart", hint: "Scroll / swipe to drive the lap", jump: "Tip: click a corner dot or the menu to jump anywhere", overview: "Full track", resume: "Scroll or tap to resume",
+    circuit: { hud: "Corner", restart: "🏁 Victory lap — restart", hint: "Scroll / swipe to drive the lap", overview: "Full track", resume: "Scroll or tap to resume",
       corners: { start: "Start / Finish", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Casino Square", hairpin: "Fairmont Hairpin", portier: "Portier", tunnel: "The Tunnel", rascasse: "Rascasse → Finish" } },
     hero: { badge: "Digital Studio", words: ["Apps", "Websites", "Automations", "Experiences"], lead: "We build", tail: "that move business forward.",
       subtext: "TDSM designs and ships mobile, desktop and web apps — from the first idea to the App Store, Google Play and beyond.",
@@ -59,7 +59,7 @@ export const translations: Record<Lang, Translation> = {
   },
   fr: {
     nav: { home: "Accueil", about: "À propos", services: "Services", work: "Réalisations", activity: "Activité", contact: "Contact", cta: "Démarrer un projet" },
-    circuit: { hud: "Virage", restart: "🏁 Tour d'honneur — recommencer", hint: "Défilez / balayez pour lancer le tour", jump: "Astuce : cliquez sur un virage ou le menu pour y aller", overview: "Circuit complet", resume: "Défilez ou touchez pour reprendre",
+    circuit: { hud: "Virage", restart: "🏁 Tour d'honneur — recommencer", hint: "Défilez / balayez pour lancer le tour", overview: "Circuit", resume: "Défilez ou touchez pour reprendre",
       corners: { start: "Départ / Arrivée", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Place du Casino", hairpin: "Épingle du Fairmont", portier: "Le Portier", tunnel: "Le Tunnel", rascasse: "Rascasse → Arrivée" } },
     hero: { badge: "Studio digital", words: ["applications", "sites web", "automatisations", "expériences"], lead: "Nous concevons des", tail: "qui font avancer votre entreprise.",
       subtext: "TDSM conçoit et livre des applications mobiles, desktop et web — de la première idée jusqu'à l'App Store, Google Play et au-delà.",
