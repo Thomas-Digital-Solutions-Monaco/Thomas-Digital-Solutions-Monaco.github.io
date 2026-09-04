@@ -46,7 +46,9 @@ const SettingsMenu = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 z-[60] w-60 rounded-2xl border border-line bg-panel p-3 shadow-glow backdrop-blur-md">
+        <>
+          <div className="fixed inset-0 z-[59] bg-black/40 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="fixed left-1/2 top-1/2 z-[60] w-[min(20rem,90vw)] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-line bg-panel p-4 shadow-glow">
           <p className="mb-2 text-xs font-bold uppercase tracking-wider text-mist">{s.title}</p>
 
           {/* Motion on/off */}
@@ -64,6 +66,7 @@ const SettingsMenu = () => {
             {seg("slow", s.slow)}{seg("normal", s.normal)}{seg("fast", s.fast)}
           </div>
         </div>
+        </>
       )}
     </div>
   );

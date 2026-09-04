@@ -210,7 +210,6 @@ const CircuitWorld = () => {
       if (!el) return false;
       return dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 2 : el.scrollTop > 2;
     };
-    const isDot = (el: EventTarget | null) => !!(el && (el as Element).closest && (el as Element).closest("circle,a,button"));
 
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) < 8) return;
@@ -223,18 +222,25 @@ const CircuitWorld = () => {
     };
     window.addEventListener("wheel", onWheel, { passive: false });
 
-    let sy = 0, sx = 0, startEl: EventTarget | null = null;
-    const onTS = (e: TouchEvent) => { sy = e.touches[0].clientY; sx = e.touches[0].clientX; startEl = e.target; };
+    let sy = 0, sx = 0;
+    const onTS = (e: TouchEvent) => { sy = e.touches[0].clientY; sx = e.touches[0].clientX; };
     const onTE = (e: TouchEvent) => {
-      // In overview: a tap on a corner dot must navigate — let the click do it.
-      if (overviewRef.current) { if (isDot(startEl)) return; if (!animating.current) exitOverview(); return; }
-      if (animating.current || cooldown.current) return;
-      const dy = sy - e.changedTouches[0].clientY, dx = sx - e.changedTouches[0].clientX;
-      if (Math.abs(dy) < 45 || Math.abs(dy) < Math.abs(dx)) return;
-      const dir: 1 | -1 = dy > 0 ? 1 : -1;
-      if (panelCanScroll(dir)) return;
-      dir > 0 ? next() : prev();
-    };
+  	if (overviewRef.current) {
+            if (animating.current) return;
+            const tt = e.changedTouches[0];
+            const hit = document.elementFromPoint(tt.clientX, tt.clientY) as Element | null;
+            const dotEl = hit?.closest("[data-corner]");
+             if (dotEl) { goTo(Number(dotEl.getAttribute("data-corner"))); return;}
+            exitOverview();
+            return;
+        }
+  	if (animating.current || cooldown.current) return;
+  	const dy = sy - e.changedTouches[0].clientY, dx = sx - e.changedTouches[0].clientX;
+  	if (Math.abs(dy) < 45 || Math.abs(dy) < Math.abs(dx)) return;
+  	const dir: 1 | -1 = dy > 0 ? 1 : -1;
+  	if (panelCanScroll(dir)) return;
+  	dir > 0 ? next() : prev();
+  	};
     window.addEventListener("touchstart", onTS, { passive: true });
     window.addEventListener("touchend", onTE, { passive: true });
 
@@ -301,7 +307,8 @@ const CircuitWorld = () => {
               <text x={d.x} y={d.y - 13} textAnchor="middle" fontSize={isActive ? 8 : 6.5} fontWeight="700" fill="rgb(var(--brand))" opacity={isActive ? 1 : 0.55} style={{ transition: "opacity .3s, font-size .3s" }}>
                 {c.corners[circuitCorners[i].key]}
               </text>
-              <circle cx={d.x} cy={d.y} r={isActive ? 7 : 5.5} fill={isActive ? "rgb(var(--brand))" : "rgb(var(--panel))"} stroke="rgb(var(--brand))" strokeWidth="2.5" style={{ cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); api.current.goTo(i); }}>
+              <circle cx={d.x} cy={d.y} r={15} fill="transparent" data-corner={i} style={{ cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); api.current.goTo(i); }} />
+              <circle cx={d.x} cy={d.y} r={isActive ? 7 : 5.5} data-corner={i} fill={isActive ? "rgb(var(--brand))" : "rgb(var(--panel))"} stroke="rgb(var(--brand))" strokeWidth="2.5" style={{ cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); api.current.goTo(i); }}>
                 <title>{c.sections[circuitCorners[i].id]} — {c.corners[circuitCorners[i].key]}</title>
               </circle>
             </g>
