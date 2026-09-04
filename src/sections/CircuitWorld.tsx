@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { circuitPath, circuitCorners, flavourLabels, WIDE } from "../constants";
 import { useI18n } from "../i18n/LanguageContext";
+import { useSettings } from "../theme/SettingsContext";
 import type { StatId, SvcId } from "../i18n/translations";
 import TopDownCar from "../components/TopDownCar";
 import StopContent from "../components/StopContent";
@@ -12,16 +13,12 @@ const N = circuitCorners.length;
 // ── size knobs (tweak these) ──────────────────────────────────────────────
 const FW = 190;            // camera "zoomed" width — smaller = closer zoom
 const CAR_SCALE = 1.2;     // F1 car size on the track
-const HALO_R = 4.5;        // red glow radius behind the car (small = clearer car)
+const HALO_R = 4.5;        // red glow radius behind the car
 const MOBILE_Q = "(max-width: 820px)";
 // ──────────────────────────────────────────────────────────────────────────
 
-/**
- * Per-corner gap between the CORNER pill (top) and the glass panel.
- *   • base class  = PHONE  (≤ 820px, your mobile drive mode)
- *   • dvd: class  = LAPTOP (≥ 821px)  ← requires  screens:{ dvd:"821px" }  in tailwind.config.js
- * Edit any single line to nudge just that panel, independently per device.
- */
+// Per-corner gap between the corner labels (top) and the glass panel.
+//   base class = PHONE (≤820px) · dvd: class = LAPTOP (≥821px)
 const PANEL_PT: Record<string, string> = {
   home:       "pt-[11.5rem] dvd:pt-36",
   live:       "pt-[9.5rem]  dvd:pt-52",   // TDSM Live
@@ -43,6 +40,7 @@ const wrap = (f: number) => ((f % 1) + 1) % 1;
 const CircuitWorld = () => {
   const { t } = useI18n();
   const c = t.circuit;
+  const { motion, speedMul } = useSettings();
 
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -51,6 +49,10 @@ const CircuitWorld = () => {
   const veilRef = useRef<HTMLDivElement>(null);
   const panelWrapRef = useRef<HTMLDivElement>(null);
   const panelScrollRef = useRef<HTMLDivElement>(null);
+
+  // live settings, read inside the animation loop
+  const motionRef = useRef(motion); motionRef.current = motion;
+  const speedRef = useRef(speedMul); speedRef.current = speedMul;
 
   const lenRef = useRef(0);
   const fracsRef = useRef<number[]>([]);
@@ -85,6 +87,8 @@ const CircuitWorld = () => {
     lenRef.current = L;
     if (trailRef.current) trailRef.current.style.strokeDasharray = String(L);
     const isMobile = () => window.matchMedia(MOBILE_Q).matches;
+    // scaled duration; 0 when the visitor turned motion off (instant jumps)
+    const D = (base: number) => (motionRef.current === "off" ? 0 : base * speedRef.current);
 
     const point = (frac: number) => p.getPointAtLength(wrap(frac) * lenRef.current);
 
@@ -96,7 +100,6 @@ const CircuitWorld = () => {
       if (trailRef.current) trailRef.current.style.strokeDashoffset = String(lenRef.current * (1 - wrap(frac)));
     };
 
-    // zoom: 1 = close (FW×FH around focus), 0 = WIDE (full track)
     const setViewBox = (zoom: number, focusFrac: number, stopId?: string) => {
       const b = smooth(zoom);
       const fp = point(focusFrac);
@@ -129,15 +132,14 @@ const CircuitWorld = () => {
     setDots(circuitCorners.map((_, i) => point(fracsRef.current[i])));
     rest(0);
 
+    // rAF tween; instant when dur <= 0 (motion off)
     const raf = (dur: number, onFrame: (k: number) => void, onDone?: () => void) => {
+      if (dur <= 0) { onFrame(1); onDone?.(); return; }
       const t0 = performance.now();
       const step = (now: number) => { const k = clamp((now - t0) / dur); onFrame(k); if (k < 1) requestAnimationFrame(step); else onDone?.(); };
       requestAnimationFrame(step);
     };
 
-    /* ── one locked drive ──
-       DESKTOP: panel out → zoom OUT to full track → drive → zoom IN → panel in
-       MOBILE:  panel out → drive at the SAME zoom (camera follows) → panel in   */
     const travel = (to: number, dir: 1 | -1) => {
       if (animating.current) return;
       const from = idxRef.current;
@@ -148,21 +150,19 @@ const CircuitWorld = () => {
       const fr = fracsRef.current;
       const dist = dir > 0 ? wrap(fr[to] - fr[from]) : wrap(fr[from] - fr[to]);
       const swap = () => { idxRef.current = to; setIdx(to); if (panelScrollRef.current) panelScrollRef.current.scrollTop = 0; };
-      const finish = () => { rest(to); animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 220); };
+      const finish = () => { rest(to); animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 200); };
 
       if (isMobile()) {
-        raf(260, (k) => setPanel(1 - smooth(k)), () => {
+        raf(D(260), (k) => setPanel(1 - smooth(k)), () => {
           swap();
-          const T = clamp(700 + dist * 3000, 700, 2600);
-          raf(T, (k) => { const f = fr[from] + dir * dist * smooth(k); setCar(f); setViewBox(1, f); },
-            () => raf(340, (k) => setPanel(smooth(k)), finish));
+          raf(D(clamp(700 + dist * 3000, 700, 2600)), (k) => { const f = fr[from] + dir * dist * smooth(k); setCar(f); setViewBox(1, f); },
+            () => raf(D(340), (k) => setPanel(smooth(k)), finish));
         });
       } else {
-        raf(420, (k) => { setPanel(1 - smooth(Math.min(1, k * 1.6))); setViewBox(1 - smooth(k), fr[from], circuitCorners[from].id); }, () => {
+        raf(D(420), (k) => { setPanel(1 - smooth(Math.min(1, k * 1.6))); setViewBox(1 - smooth(k), fr[from], circuitCorners[from].id); }, () => {
           swap();
-          const T = clamp(900 + dist * 3400, 900, 3000);
-          raf(T, (k) => setCar(fr[from] + dir * dist * smooth(k)), () => {
-            raf(520, (k) => { setViewBox(smooth(k), fr[to], circuitCorners[to].id); if (k > 0.5) setPanel(smooth((k - 0.5) / 0.5)); }, finish);
+          raf(D(clamp(900 + dist * 3400, 900, 3000)), (k) => setCar(fr[from] + dir * dist * smooth(k)), () => {
+            raf(D(520), (k) => { setViewBox(smooth(k), fr[to], circuitCorners[to].id); if (k > 0.5) setPanel(smooth((k - 0.5) / 0.5)); }, finish);
           });
         });
       }
@@ -175,14 +175,15 @@ const CircuitWorld = () => {
     const goTo = (target: number) => {
       if (target === idxRef.current && !overviewRef.current) return;
       if (overviewRef.current) {
+        if (animating.current) return;
         animating.current = true; overviewRef.current = false; setOverview(false); setHint(false);
         const from = idxRef.current, fr = fracsRef.current;
         const dir: 1 | -1 = target >= from ? 1 : -1;
         const dist = dir > 0 ? wrap(fr[target] - fr[from]) : wrap(fr[from] - fr[target]);
         idxRef.current = target; setIdx(target);
         if (panelScrollRef.current) panelScrollRef.current.scrollTop = 0;
-        raf(clamp(800 + dist * 2200, 800, 2400), (k) => { const f = fr[from] + dir * dist * smooth(k); setCar(f); setViewBox(smooth(k), f); },
-          () => raf(300, (k) => setPanel(smooth(k)), () => { rest(target); animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 220); }));
+        raf(D(clamp(800 + dist * 2200, 800, 2400)), (k) => { const f = fr[from] + dir * dist * smooth(k); setCar(f); setViewBox(smooth(k), f); },
+          () => raf(D(300), (k) => setPanel(smooth(k)), () => { rest(target); animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 200); }));
         return;
       }
       travel(target, target > idxRef.current ? 1 : -1);
@@ -192,13 +193,13 @@ const CircuitWorld = () => {
       if (animating.current) return;
       animating.current = true; overviewRef.current = true; setOverview(true); setHint(false);
       const cur = idxRef.current;
-      raf(600, (k) => { setPanel(1 - smooth(k)); setViewBox(1 - smooth(k), fracsRef.current[cur], circuitCorners[cur].id); }, () => (animating.current = false));
+      raf(D(600), (k) => { setPanel(1 - smooth(k)); setViewBox(1 - smooth(k), fracsRef.current[cur], circuitCorners[cur].id); }, () => (animating.current = false));
     };
     const exitOverview = () => {
       if (animating.current) return;
       animating.current = true; overviewRef.current = false; setOverview(false);
       const cur = idxRef.current;
-      raf(600, (k) => { setPanel(smooth(k)); setViewBox(smooth(k), fracsRef.current[cur], circuitCorners[cur].id); }, () => { animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 220); });
+      raf(D(600), (k) => { setPanel(smooth(k)); setViewBox(smooth(k), fracsRef.current[cur], circuitCorners[cur].id); }, () => { animating.current = false; cooldown.current = true; setTimeout(() => (cooldown.current = false), 200); });
     };
     const overviewToggle = () => (overviewRef.current ? exitOverview() : enterOverview());
 
@@ -209,6 +210,7 @@ const CircuitWorld = () => {
       if (!el) return false;
       return dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 2 : el.scrollTop > 2;
     };
+    const isDot = (el: EventTarget | null) => !!(el && (el as Element).closest && (el as Element).closest("circle,a,button"));
 
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) < 8) return;
@@ -221,10 +223,11 @@ const CircuitWorld = () => {
     };
     window.addEventListener("wheel", onWheel, { passive: false });
 
-    let sy = 0, sx = 0;
-    const onTS = (e: TouchEvent) => { sy = e.touches[0].clientY; sx = e.touches[0].clientX; };
+    let sy = 0, sx = 0, startEl: EventTarget | null = null;
+    const onTS = (e: TouchEvent) => { sy = e.touches[0].clientY; sx = e.touches[0].clientX; startEl = e.target; };
     const onTE = (e: TouchEvent) => {
-      if (overviewRef.current) { if (!animating.current) exitOverview(); return; }
+      // In overview: a tap on a corner dot must navigate — let the click do it.
+      if (overviewRef.current) { if (isDot(startEl)) return; if (!animating.current) exitOverview(); return; }
       if (animating.current || cooldown.current) return;
       const dy = sy - e.changedTouches[0].clientY, dx = sx - e.changedTouches[0].clientX;
       if (Math.abs(dy) < 45 || Math.abs(dy) < Math.abs(dx)) return;
@@ -267,7 +270,6 @@ const CircuitWorld = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const cornerName = c.corners[circuitCorners[idx].key];
   const panelPt = PANEL_PT[circuitCorners[idx].id] ?? "pt-[4.5rem] dvd:pt-24";
 
   return (
@@ -286,19 +288,26 @@ const CircuitWorld = () => {
 
         {dots[0] && <rect x={dots[0].x - 2.5} y={dots[0].y - 13} width="5" height="26" fill="rgb(var(--ink))" opacity="0.55" />}
         {flavourLabels.map((l) => (<text key={l.name} x={l.x} y={l.y - 7} textAnchor="middle" fontSize="6.5" fontWeight="600" fill="rgb(var(--mist))" opacity="0.5">{l.name}</text>))}
+
         {dots.map((d, i) => {
           const isActive = i === idx;
           return (
             <g key={i}>
-              <text x={d.x} y={d.y - 13} textAnchor="middle" fontSize={isActive ? 9 : 7} fontWeight="800" fill="rgb(var(--brand))" opacity={isActive ? 1 : 0.55} style={{ transition: "opacity .3s, font-size .3s" }}>{c.corners[circuitCorners[i].key]}</text>
+              {/* section title (what you'll see) — above the Monaco corner name */}
+              <text x={d.x} y={d.y - 21} textAnchor="middle" fontSize={isActive ? 8.5 : 6.5} fontWeight="800" fill="rgb(var(--ink))" opacity={isActive ? 0.95 : 0.6} style={{ transition: "opacity .3s, font-size .3s" }}>
+                {c.sections[circuitCorners[i].id]}
+              </text>
+              {/* Monaco corner name */}
+              <text x={d.x} y={d.y - 13} textAnchor="middle" fontSize={isActive ? 8 : 6.5} fontWeight="700" fill="rgb(var(--brand))" opacity={isActive ? 1 : 0.55} style={{ transition: "opacity .3s, font-size .3s" }}>
+                {c.corners[circuitCorners[i].key]}
+              </text>
               <circle cx={d.x} cy={d.y} r={isActive ? 7 : 5.5} fill={isActive ? "rgb(var(--brand))" : "rgb(var(--panel))"} stroke="rgb(var(--brand))" strokeWidth="2.5" style={{ cursor: "pointer" }} onClick={(e) => { e.stopPropagation(); api.current.goTo(i); }}>
-                <title>{c.corners[circuitCorners[i].key]}</title>
+                <title>{c.sections[circuitCorners[i].id]} — {c.corners[circuitCorners[i].key]}</title>
               </circle>
             </g>
           );
         })}
 
-        {/* car — small halo so the F1 shape stays readable */}
         <g ref={carRef}>
           <circle r={HALO_R} className="car-glow" fill="#d81e2c" opacity="0.25" />
           <g filter="url(#carGlow)"><TopDownCar scale={CAR_SCALE} /></g>
@@ -312,18 +321,18 @@ const CircuitWorld = () => {
       <div className="pointer-events-none absolute inset-x-0 top-20 z-30 flex justify-center px-4 dvd:top-24">
         <div className="flex max-w-[70vw] items-center gap-2.5 rounded-full border border-line bg-panel/85 px-4 py-2 text-xs shadow-soft backdrop-blur-md">
           <span className="inline-flex items-center gap-1.5 font-bold uppercase tracking-wide text-brand"><span className="live-dot h-1.5 w-1.5 rounded-full bg-brand" />{c.hud} {idx + 1}/{N}</span>
-          <span className="truncate font-semibold text-ink">{cornerName}</span>
+          <span className="truncate font-semibold text-ink">{c.sections[circuitCorners[idx].id]} · {c.corners[circuitCorners[idx].key]}</span>
         </div>
       </div>
 
-      {/* Full-track button */}
+      {/* Full-track button (icon-only, no trailing space) */}
       <div className="absolute right-4 top-20 z-30 dvd:right-6 dvd:top-24">
-        <button onClick={() => api.current.overviewToggle()} className="inline-flex items-center rounded-full border border-line bg-panel/85 px-3 py-2.5 text-sm font-semibold text-ink shadow-soft backdrop-blur-md transition-colors hover:border-brand hover:text-brand">
+        <button onClick={() => api.current.overviewToggle()} className="grid h-11 w-11 place-items-center rounded-full border border-line bg-panel/85 text-base font-semibold text-ink shadow-soft backdrop-blur-md transition-colors hover:border-brand hover:text-brand" title={c.overview}>
           <span aria-hidden>{overview ? "↩" : "⤢"}</span>
         </button>
       </div>
 
-      {/* stop panel — per-corner top padding via PANEL_PT (phone base / dvd: laptop) */}
+      {/* stop panel — per-corner top padding */}
       <div ref={panelWrapRef} className={`absolute inset-0 z-20 flex items-start justify-center px-4 pb-6 ${panelPt}`} style={{ opacity: 0 }}>
         <div className="w-full max-w-2xl">
           <div className="rounded-3xl border border-line bg-panel/85 p-5 shadow-glow backdrop-blur-md dvd:p-7">

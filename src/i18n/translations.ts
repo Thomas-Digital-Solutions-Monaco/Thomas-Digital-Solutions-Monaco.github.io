@@ -1,4 +1,4 @@
-import type { CornerKey } from "../constants/monacoCircuit";
+import type { CornerKey, StopKind } from "../constants/monacoCircuit";
 
 export type Lang = "en" | "fr";
 export type Platform = "ios" | "android" | "mac" | "windows";
@@ -13,7 +13,8 @@ export interface Previews { appsTitle: string; experienceTitle: string; platform
 
 export interface Translation {
   nav: { home: string; about: string; services: string; work: string; activity: string; contact: string; cta: string; };
-  circuit: { hud: string; restart: string; hint: string; resume: string; corners: Record<CornerKey, string>; };
+  circuit: { hud: string; restart: string; hint: string; overview: string; resume: string; corners: Record<CornerKey, string>; sections: Record<StopKind, string>; };
+  settings: { title: string; motion: string; on: string; off: string; speed: string; slow: string; normal: string; fast: string; };
   hero: { badge: string; words: string[]; lead: string; tail: string; subtext: string; ctaPrimary: string; ctaSecondary: string; };
   radar: { live: string; title: string; kApps: string; kPlatforms: string; kYears: string; kCommits: string; nextEvent: string; today: string; news: string; days: string; day: string; starts: string; liveNow: string; };
   about: { eyebrow: string; headA: string; acc1: string; mid: string; acc2: string; end: string; subtext: string; stats: Stat[]; previews: Previews; };
@@ -29,8 +30,10 @@ const A = { streakly: "#d81e2c", governor: "#9b1c31", dearfolk: "#e0764a" };
 export const translations: Record<Lang, Translation> = {
   en: {
     nav: { home: "Home", about: "About", services: "Services", work: "Work", activity: "Activity", contact: "Contact", cta: "Start a project" },
-    circuit: { hud: "Corner", restart: "🏁 Victory lap — restart", hint: "Scroll / swipe to drive the lap", resume: "Scroll or tap to resume",
-      corners: { start: "Start / Finish", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Casino Square", hairpin: "Fairmont Hairpin", portier: "Portier", tunnel: "The Tunnel", rascasse: "Rascasse → Finish" } },
+    circuit: { hud: "Corner", restart: "🏁 Victory lap — restart", hint: "Scroll / swipe to drive the lap", overview: "Full track", resume: "Scroll or tap to resume",
+      corners: { start: "Start / Finish", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Casino Square", hairpin: "Fairmont Hairpin", portier: "Portier", tunnel: "The Tunnel", rascasse: "Rascasse → Finish" },
+      sections: { home: "Home", live: "TDSM Live", about: "About", services: "Services", work: "Work", experience: "Journey", activity: "Activity", contact: "Contact" } },
+    settings: { title: "Animation", motion: "Motion", on: "On", off: "Off", speed: "Speed", slow: "Slow", normal: "Normal", fast: "Fast" },
     hero: { badge: "Digital Studio", words: ["Apps", "Websites", "Automations", "Experiences"], lead: "We build", tail: "that move business forward.",
       subtext: "TDSM designs and ships mobile, desktop and web apps — from the first idea to the App Store, Google Play and beyond.",
       ctaPrimary: "Start a project →", ctaSecondary: "View our work" },
@@ -43,7 +46,7 @@ export const translations: Record<Lang, Translation> = {
     services: { eyebrow: "What we do", heading: "Services engineered end-to-end", cta: "Start a project →", hint: "Click any service to learn more", close: "Close",
       items: [
         { id: "mobile", title: "Mobile App Development", desc: "Native-feeling iOS & Android apps for the App Store and Google Play.", detail: "We take mobile products from idea to store listing with React Native and Expo — one codebase, both platforms, without compromising the native feel.", points: ["iOS & Android, one codebase", "App Store & Google Play", "Offline-first, push & deep links", "Analytics & crash reporting"] },
-        { id: "desktop", title: "Desktop & Cross-Platform", desc: "Mac and Windows apps from a shared codebase — consistent everywhere.", detail: "Fast, native-feeling Mac and Windows apps that stay in sync with your mobile and web experiences — one design system, everywhere.", points: ["MacOS & Windows builds", "Auto-updates & code signing", "Shared logic with mobile/web", "Shortcuts & OS integrations"] },
+        { id: "desktop", title: "Desktop & Cross-Platform", desc: "Mac and Windows apps from a shared codebase — consistent everywhere.", detail: "Fast, native-feeling Mac and Windows apps that stay in sync with your mobile and web experiences — one design system, everywhere.", points: ["macOS & Windows builds", "Auto-updates & code signing", "Shared logic with mobile/web", "Shortcuts & OS integrations"] },
         { id: "automation", title: "Automation & Integration", desc: "Workflows and API integrations that remove repetitive work.", detail: "We connect the tools you already use and automate the busywork between them — from device management to custom API integrations.", points: ["API & webhook integrations", "Device automation (Intune)", "Scheduled & event workflows", "Dashboards to monitor it all"] },
         { id: "cloud", title: "Cloud & DevOps", desc: "Azure infrastructure and CI/CD so you ship continuously and safely.", detail: "Infrastructure as code, automated pipelines and monitoring — so every release is repeatable, observable and safe to roll back.", points: ["Azure infrastructure as code", "CI/CD (GitHub Actions)", "Monitoring & alerting", "Zero-downtime deploys"] },
       ] },
@@ -59,8 +62,10 @@ export const translations: Record<Lang, Translation> = {
   },
   fr: {
     nav: { home: "Accueil", about: "À propos", services: "Services", work: "Réalisations", activity: "Activité", contact: "Contact", cta: "Démarrer un projet" },
-    circuit: { hud: "Virage", restart: "🏁 Tour d'honneur — recommencer", hint: "Défilez / balayez pour lancer le tour", resume: "Défilez ou touchez pour reprendre",
-      corners: { start: "Départ / Arrivée", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Place du Casino", hairpin: "Épingle du Fairmont", portier: "Le Portier", tunnel: "Le Tunnel", rascasse: "Rascasse → Arrivée" } },
+    circuit: { hud: "Virage", restart: "🏁 Tour d'honneur — recommencer", hint: "Défilez / balayez pour lancer le tour", overview: "Circuit complet", resume: "Défilez ou touchez pour reprendre",
+      corners: { start: "Départ / Arrivée", devote: "Sainte Dévote", beaurivage: "Beau Rivage", casino: "Place du Casino", hairpin: "Épingle du Fairmont", portier: "Le Portier", tunnel: "Le Tunnel", rascasse: "Rascasse → Arrivée" },
+      sections: { home: "Accueil", live: "TDSM Live", about: "À propos", services: "Services", work: "Réalisations", experience: "Parcours", activity: "Activité", contact: "Contact" } },
+    settings: { title: "Animation", motion: "Animation", on: "Activée", off: "Désactivée", speed: "Vitesse", slow: "Lente", normal: "Normale", fast: "Rapide" },
     hero: { badge: "Studio digital", words: ["applications", "sites web", "automatisations", "expériences"], lead: "Nous concevons des", tail: "qui font avancer votre entreprise.",
       subtext: "TDSM conçoit et livre des applications mobiles, desktop et web — de la première idée jusqu'à l'App Store, Google Play et au-delà.",
       ctaPrimary: "Démarrer un projet →", ctaSecondary: "Voir nos réalisations" },
@@ -73,7 +78,7 @@ export const translations: Record<Lang, Translation> = {
     services: { eyebrow: "Ce que nous faisons", heading: "Des services conçus de bout en bout", cta: "Démarrer un projet →", hint: "Cliquez sur un service pour en savoir plus", close: "Fermer",
       items: [
         { id: "mobile", title: "Applications mobiles", desc: "Des apps iOS & Android au rendu natif, pour l'App Store et Google Play.", detail: "De l'idée à la mise en ligne avec React Native et Expo — une seule base de code, les deux plateformes, sans sacrifier le rendu natif.", points: ["iOS & Android, une base", "App Store & Google Play", "Offline-first, push & deep links", "Analytics & rapports de crash"] },
-        { id: "desktop", title: "Desktop & multiplateforme", desc: "Des apps Mac et Windows depuis une base partagée — cohérentes partout.", detail: "Des applications Mac et Windows rapides, au rendu natif, synchronisées avec vos expériences mobiles et web.", points: ["Builds MacOS & Windows", "Mises à jour & signature", "Logique partagée mobile/web", "Raccourcis & intégrations OS"] },
+        { id: "desktop", title: "Desktop & multiplateforme", desc: "Des apps Mac et Windows depuis une base partagée — cohérentes partout.", detail: "Des applications Mac et Windows rapides, au rendu natif, synchronisées avec vos expériences mobiles et web.", points: ["Builds macOS & Windows", "Mises à jour & signature", "Logique partagée mobile/web", "Raccourcis & intégrations OS"] },
         { id: "automation", title: "Automatisation & intégration", desc: "Workflows et intégrations d'API qui suppriment les tâches répétitives.", detail: "Nous relions vos outils et automatisons les tâches entre eux — de la gestion de parc aux intégrations d'API sur mesure.", points: ["Intégrations API & webhooks", "Automatisation (Intune)", "Workflows planifiés", "Tableaux de bord"] },
         { id: "cloud", title: "Cloud & DevOps", desc: "Infrastructure Azure et CI/CD pour livrer en continu et en sécurité.", detail: "Infrastructure as code, pipelines automatisés et supervision — pour que chaque release soit reproductible et réversible.", points: ["Infrastructure Azure as code", "CI/CD (GitHub Actions)", "Supervision & alertes", "Déploiements sans interruption"] },
       ] },

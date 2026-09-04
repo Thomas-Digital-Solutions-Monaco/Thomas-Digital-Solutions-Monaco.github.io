@@ -10,18 +10,14 @@ function clean(raw: string): string {
   const b = document.createElement("textarea"); b.innerHTML = s;
   return b.value.replace(/\s+/g, " ").trim();
 }
-function withTimeout(url: string, ms = 5000): Promise<Response> {
-  const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), ms);
-  return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(timer));
-}
+function withTimeout(url: string, ms = 5000): Promise<Response> { const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), ms); return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(timer)); }
 async function wpRest(): Promise<FeedItem[]> {
   const origin = new URL(monacoFeedUrl).origin;
   const r = await withTimeout(`${origin}/wp-json/wp/v2/posts?per_page=8&_fields=title,link`);
   if (!r.ok) throw new Error(String(r.status));
   const arr = (await r.json()) as { title?: { rendered?: string }; link?: string }[];
   const items = arr.map((p) => ({ title: clean(p.title?.rendered ?? ""), link: p.link ?? origin })).filter((i) => i.title.length > 3);
-  if (!items.length) throw new Error("empty");
-  return items;
+  if (!items.length) throw new Error("empty"); return items;
 }
 function collect(doc: Document): FeedItem[] {
   return Array.from(doc.querySelectorAll("item, entry")).slice(0, 8).map((n) => {

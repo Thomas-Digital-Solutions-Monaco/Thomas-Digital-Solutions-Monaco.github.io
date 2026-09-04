@@ -2,6 +2,7 @@ import { useState } from "react";
 import { company } from "../constants";
 import { useI18n } from "../i18n/LanguageContext";
 import { useTheme } from "../theme/ThemeContext";
+import SettingsMenu from "../components/SettingsMenu";
 const Navbar = () => {
   const { t, lang, toggle } = useI18n();
   const { theme, toggle: toggleTheme } = useTheme();
@@ -20,6 +21,7 @@ const Navbar = () => {
         </a>
         <ul className="hidden items-center gap-7 lg:flex">{links.map((link) => (<li key={link.href}><a href={link.href} className="text-sm font-medium text-mist transition-colors hover:text-ink">{link.label}</a></li>))}</ul>
         <div className="flex items-center gap-2 sm:gap-3">
+          <SettingsMenu />
           <button onClick={toggleTheme} className={iconBtn} aria-label="Toggle dark mode" title={theme === "dark" ? "Light mode" : "Dark mode"}>{theme === "dark" ? "☀️" : "🌙"}</button>
           <button onClick={toggle} className="rounded-lg border border-line bg-panel/70 px-3 py-1.5 text-xs font-bold uppercase text-ink transition-colors hover:border-brand hover:text-brand" aria-label="Switch language" title={lang === "en" ? "Passer en français" : "Switch to English"}>{lang === "en" ? "FR" : "EN"}</button>
           <a href="#contact" className="btn btn-primary hidden lg:inline-flex">{t.nav.cta}</a>

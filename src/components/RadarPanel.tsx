@@ -37,9 +37,7 @@ const RadarPanel = ({ onStat }: { onStat: (id: StatId, e: React.MouseEvent<HTMLB
         <div className="mt-3">
           <p className="mb-1.5 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide text-brand"><span className="live-dot h-1.5 w-1.5 rounded-full bg-brand" />{r.news}</p>
           {live ? (
-            <a key={idx} href={items![idx].link} target="_blank" rel="noopener noreferrer" className="word-swap flex items-start gap-2 rounded-lg border border-line bg-cream/90 px-3 py-2 backdrop-blur-sm transition-colors hover:border-brand">
-              <span className="min-w-0 flex-1"><span className={`${clamp2} text-sm font-semibold leading-snug text-ink`}>{items![idx].title}</span>{items!.length > 1 && <span className="mt-0.5 block text-[10px] text-mist">{idx + 1}/{items!.length}</span>}</span><span className="mt-0.5 shrink-0 text-mist">→</span>
-            </a>
+            <a key={idx} href={items![idx].link} target="_blank" rel="noopener noreferrer" className="word-swap flex items-start gap-2 rounded-lg border border-line bg-cream/90 px-3 py-2 backdrop-blur-sm transition-colors hover:border-brand"><span className="min-w-0 flex-1"><span className={`${clamp2} text-sm font-semibold leading-snug text-ink`}>{items![idx].title}</span>{items!.length > 1 && <span className="mt-0.5 block text-[10px] text-mist">{idx + 1}/{items!.length}</span>}</span><span className="mt-0.5 shrink-0 text-mist">→</span></a>
           ) : (
             <a key={idx} href={events[idx % events.length]?.url} target="_blank" rel="noopener noreferrer" className="word-swap flex items-center gap-2 rounded-lg border border-line bg-cream/90 px-3 py-2 backdrop-blur-sm transition-colors hover:border-brand"><span className="text-lg" aria-hidden>{events[idx % events.length]?.icon}</span><span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{events[idx % events.length]?.name}</span><span className="shrink-0 text-mist">→</span></a>
           )}

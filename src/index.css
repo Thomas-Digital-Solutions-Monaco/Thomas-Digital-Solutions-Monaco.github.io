@@ -16,6 +16,8 @@
 html { -webkit-text-size-adjust: 100%; }
 body { @apply bg-paper text-ink font-sans antialiased; transition: background-color 0.3s ease, color 0.3s ease; }
 body.deck-lock { overflow: hidden; overscroll-behavior: none; touch-action: none; }
+/* "no animation" mode — visitor turned motion off */
+.no-anim *, .no-anim *::before, .no-anim *::after { animation: none !important; }
 @layer components {
   .eyebrow { @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand; }
   .heading { @apply text-2xl sm:text-3xl font-bold tracking-tight text-ink; }

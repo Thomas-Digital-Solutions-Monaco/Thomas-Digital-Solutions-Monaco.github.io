@@ -1,8 +1,7 @@
 export const company = { name: "Thomas Digital Solutions Monaco", short: "TDSM", email: "contact@tdsm.mc", location: "Monaco", phone: "+377 00 00 00 00" };
-export const githubUsername = "Thomas-Digital-Solutions-Monaco";
+export const githubUsername = "Thomas";
 export const monacoFeedUrl = "https://www.monaco-tribune.com/feed/";
-// Proper display name for each platform id (used wherever platforms are listed).
-export const platformLabels: Record<string, string> = { ios: "iOS", android: "Android", mac: "MacOS", windows: "Windows" };
+export const platformLabels: Record<string, string> = { ios: "iOS", android: "Android", mac: "macOS", windows: "Windows" };
 export interface TechLogo { name: string; url?: string; color: string; }
 const si = (slug: string, color?: string) => `https://cdn.simpleicons.org/${slug}${color ? `/${color}` : ""}`;
 const dev = (path: string) => `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${path}.svg`;
@@ -16,9 +15,9 @@ export const techLogos: TechLogo[] = [
 ];
 export const platformsList: { id: string; name: string; note: string }[] = [
   { id: "ios", name: "iOS", note: "iPhone & iPad" }, { id: "android", name: "Android", note: "Phones & tablets" },
-  { id: "mac", name: "MacOS", note: "Native Mac apps" }, { id: "windows", name: "Windows", note: "Desktop apps" },
+  { id: "mac", name: "macOS", note: "Native Mac apps" }, { id: "windows", name: "Windows", note: "Desktop apps" },
 ];
-export const socials = [ { name: "GitHub", href: "https://github.com/Thomas-Digital-Solutions-Monaco" }, { name: "Email", href: "mailto:contact@tdsm.mc" } ];
+export const socials = [ { name: "GitHub", href: "https://github.com/" }, { name: "LinkedIn", href: "https://www.linkedin.com/" }, { name: "Email", href: "mailto:contact@tdsm.mc" } ];
 export { monacoEvents } from "./monacoEvents";
 export type { MonacoEvent } from "./monacoEvents";
 export { circuitPath, circuitViewBox, circuitCorners, flavourLabels, WIDE } from "./monacoCircuit";

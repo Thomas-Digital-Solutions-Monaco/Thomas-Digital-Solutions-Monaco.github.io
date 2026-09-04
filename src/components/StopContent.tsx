@@ -113,8 +113,6 @@ const StopContent = ({ kind, onStat, onSvc, onRestart }: Props) => {
     );
 
   if (kind === "experience")
-    // flex timeline — dot lives in its own column (no negative offset that a
-    // scroll container would clip).
     return (
       <div>
         <p className="eyebrow mb-3">{t.experience.eyebrow}</p>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <meta name="description" content="Thomas Digital Solutions Monaco (TDSM) — mobile, desktop & web app development from Monaco." />
     <title>TDSM — Thomas Digital Solutions Monaco</title>
-    <script>try{var s=localStorage.getItem("tdsm-theme");if(s==="dark"||(!s&&window.matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark");}catch(e){}</script>
+    <script>try{var s=localStorage.getItem("tdsm-theme");if(s==="dark"||(!s&&window.matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark");if(localStorage.getItem("tdsm-motion")==="off")document.documentElement.classList.add("no-anim");}catch(e){}</script>
   </head>
   <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
 </html>
